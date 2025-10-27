@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Image Animation - Class Based</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            overflow-x: hidden;
+        }
+
+        .nias-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .nias-container {
+            width: 100%;
+            max-width: 600px;
+            perspective: 1500px;
+        }
+
+        .nias-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* نسبت 4:3 */
+            transform-style: preserve-3d;
+        }
+
+        .nias-element {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+        }
+
+        .nias-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .nias-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .nias-info p {
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .nias-container {
+                max-width: 90%;
+            }
+            .nias-info h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- انیمیشن نوع 1: rotate-zoom -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Rotate Y + Zoom</h2>
+                <p>کلاس: nias-rotate-zoom</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-rotate-zoom" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Mountain">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 2: rotate-xy -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Rotate X + Y</h2>
+                <p>کلاس: nias-rotate-xy</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-rotate-xy" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop" alt="Nature">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 3: rotate-360 -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Rotate 360</h2>
+                <p>کلاس: nias-rotate-360</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-rotate-360" src="https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=800&h=600&fit=crop" alt="Ocean">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 4: cube-flip -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Cube Flip</h2>
+                <p>کلاس: nias-cube-flip</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-cube-flip" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=600&fit=crop" alt="Desert">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 5: twist-scale -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Twist + Scale</h2>
+                <p>کلاس: nias-twist-scale</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-twist-scale" src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=600&fit=crop" alt="City">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 6: fade-slide -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Fade + Slide</h2>
+                <p>کلاس: nias-fade-slide</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-fade-slide" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=600&fit=crop" alt="Sky">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 7: perspective-shift -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Perspective Shift</h2>
+                <p>کلاس: nias-perspective-shift</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-perspective-shift" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" alt="Mountain Peak">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 8: flip-card -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Flip Card</h2>
+                <p>کلاس: nias-flip-card</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-flip-card" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop" alt="Lake">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 9: zoom-blur -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Zoom Blur</h2>
+                <p>کلاس: nias-zoom-blur</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-zoom-blur" src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=800&h=600&fit=crop" alt="Forest">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 10: spiral -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Spiral Rotation</h2>
+                <p>کلاس: nias-spiral</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-spiral" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop" alt="River">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 11: wave -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Wave Effect</h2>
+                <p>کلاس: nias-wave</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-wave" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop" alt="Beach">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 12: bounce-3d -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>3D Bounce</h2>
+                <p>کلاس: nias-bounce-3d</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-bounce-3d" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop" alt="Clouds">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 13: fold -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Paper Fold</h2>
+                <p>کلاس: nias-fold</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-fold" src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=600&fit=crop" alt="Flower">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 14: parallax-depth -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Parallax Depth</h2>
+                <p>کلاس: nias-parallax-depth</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-parallax-depth" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" alt="Waterfall">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 15: glitch -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Glitch Effect</h2>
+                <p>کلاس: nias-glitch</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-glitch" src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop" alt="Sunset">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 16: morph -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Morph Scale</h2>
+                <p>کلاس: nias-morph</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-morph" src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&h=600&fit=crop" alt="Valley">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 17: reveal-diagonal -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Diagonal Reveal</h2>
+                <p>کلاس: nias-reveal-diagonal</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-reveal-diagonal" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Peak">
+            </div>
+        </div>
+    </div>
+
+    <!-- انیمیشن نوع 18: tilt-shift -->
+    <div class="nias-section">
+        <div class="nias-container">
+            <div class="nias-info">
+                <h2>Tilt Shift</h2>
+                <p>کلاس: nias-tilt-shift</p>
+            </div>
+            <div class="nias-wrapper">
+                <img class="nias-element nias-tilt-shift" src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop" alt="Grass">
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // انیمیشن 1: Rotate Y + Zoom
+            const niasRotateZoom = document.querySelectorAll('.nias-rotate-zoom');
+            niasRotateZoom.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateY: -45,
+                        scale: 0.8,
+                        opacity: 0.3,
+                    },
+                    {
+                        rotateY: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 2: Rotate X + Y
+            const niasRotateXY = document.querySelectorAll('.nias-rotate-xy');
+            niasRotateXY.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: 45,
+                        rotateY: 45,
+                        opacity: 0.3,
+                    },
+                    {
+                        rotateX: 0,
+                        rotateY: 0,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 3: Rotate 360
+            const niasRotate360 = document.querySelectorAll('.nias-rotate-360');
+            niasRotate360.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateY: 0,
+                        scale: 0.5,
+                    },
+                    {
+                        rotateY: 360,
+                        scale: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'bottom 20%',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 4: Cube Flip
+            const niasCubeFlip = document.querySelectorAll('.nias-cube-flip');
+            niasCubeFlip.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: -90,
+                        rotateZ: -45,
+                        scale: 0.7,
+                        opacity: 0,
+                    },
+                    {
+                        rotateX: 0,
+                        rotateZ: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 5: Twist + Scale
+            const niasTwistScale = document.querySelectorAll('.nias-twist-scale');
+            niasTwistScale.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateY: 180,
+                        rotateX: 30,
+                        scale: 1.5,
+                        opacity: 0,
+                    },
+                    {
+                        rotateY: 0,
+                        rotateX: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 6: Fade + Slide
+            const niasFadeSlide = document.querySelectorAll('.nias-fade-slide');
+            niasFadeSlide.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        x: -200,
+                        rotateZ: -15,
+                        opacity: 0,
+                        scale: 0.8,
+                    },
+                    {
+                        x: 0,
+                        rotateZ: 0,
+                        opacity: 1,
+                        scale: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 7: Perspective Shift
+            const niasPerspectiveShift = document.querySelectorAll('.nias-perspective-shift');
+            niasPerspectiveShift.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: 60,
+                        y: 100,
+                        scale: 0.6,
+                        opacity: 0,
+                    },
+                    {
+                        rotateX: 0,
+                        y: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن برای همه متن‌ها
+            const niasAllInfo = document.querySelectorAll('.nias-info');
+            niasAllInfo.forEach(info => {
+                const section = info.closest('.nias-section');
+                gsap.fromTo(info,
+                    {
+                        opacity: 0,
+                        y: 30,
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 70%',
+                            end: 'top 40%',
+                            scrub: 1,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 8: Flip Card
+            const niasFlipCard = document.querySelectorAll('.nias-flip-card');
+            niasFlipCard.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateY: -180,
+                        opacity: 0,
+                    },
+                    {
+                        rotateY: 0,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 9: Zoom Blur
+            const niasZoomBlur = document.querySelectorAll('.nias-zoom-blur');
+            niasZoomBlur.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        scale: 2,
+                        filter: 'blur(20px)',
+                        opacity: 0,
+                    },
+                    {
+                        scale: 1,
+                        filter: 'blur(0px)',
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 10: Spiral
+            const niasSpiral = document.querySelectorAll('.nias-spiral');
+            niasSpiral.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateZ: -180,
+                        scale: 0.3,
+                        opacity: 0,
+                    },
+                    {
+                        rotateZ: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 11: Wave
+            const niasWave = document.querySelectorAll('.nias-wave');
+            niasWave.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: 0,
+                        rotateY: -90,
+                        x: -100,
+                        opacity: 0,
+                    },
+                    {
+                        rotateX: 0,
+                        rotateY: 0,
+                        x: 0,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 12: 3D Bounce
+            const niasBounce3d = document.querySelectorAll('.nias-bounce-3d');
+            niasBounce3d.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        y: -300,
+                        rotateX: -180,
+                        scale: 0.5,
+                        opacity: 0,
+                    },
+                    {
+                        y: 0,
+                        rotateX: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 13: Paper Fold
+            const niasFold = document.querySelectorAll('.nias-fold');
+            niasFold.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: 90,
+                        transformOrigin: 'top center',
+                        opacity: 0,
+                    },
+                    {
+                        rotateX: 0,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 14: Parallax Depth
+            const niasParallaxDepth = document.querySelectorAll('.nias-parallax-depth');
+            niasParallaxDepth.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        z: -500,
+                        scale: 0.6,
+                        opacity: 0.3,
+                    },
+                    {
+                        z: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 15: Glitch
+            const niasGlitch = document.querySelectorAll('.nias-glitch');
+            niasGlitch.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        x: -50,
+                        skewX: 20,
+                        opacity: 0,
+                    },
+                    {
+                        x: 0,
+                        skewX: 0,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 16: Morph Scale
+            const niasMorph = document.querySelectorAll('.nias-morph');
+            niasMorph.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        scaleX: 0.3,
+                        scaleY: 1.5,
+                        opacity: 0,
+                    },
+                    {
+                        scaleX: 1,
+                        scaleY: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 17: Diagonal Reveal
+            const niasRevealDiagonal = document.querySelectorAll('.nias-reveal-diagonal');
+            niasRevealDiagonal.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        x: -200,
+                        y: -200,
+                        rotateZ: -45,
+                        scale: 0.5,
+                        opacity: 0,
+                    },
+                    {
+                        x: 0,
+                        y: 0,
+                        rotateZ: 0,
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+
+            // انیمیشن 18: Tilt Shift
+            const niasTiltShift = document.querySelectorAll('.nias-tilt-shift');
+            niasTiltShift.forEach(element => {
+                const section = element.closest('.nias-section');
+                gsap.fromTo(element,
+                    {
+                        rotateX: -30,
+                        rotateY: 30,
+                        filter: 'blur(10px)',
+                        scale: 0.8,
+                        opacity: 0,
+                    },
+                    {
+                        rotateX: 0,
+                        rotateY: 0,
+                        filter: 'blur(0px)',
+                        scale: 1,
+                        opacity: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 80%',
+                            end: 'center center',
+                            scrub: 1,
+                            markers: true,
+                        },
+                    }
+                );
+            });
+        });
+    </script>
+
+</body>
+</html>
