@@ -261,7 +261,6 @@
         }
 
         /* ─── DURATION CLASSES ─── */
-        /* Used only for non-scrub (trigger-based) animations */
         .nias-dur-xs  { --nias-dur: 0.3s; }
         .nias-dur-sm  { --nias-dur: 0.6s; }
         .nias-dur-md  { --nias-dur: 1s;   }
@@ -277,12 +276,6 @@
         .nias-delay-500 { --nias-delay: 0.5s;  }
         .nias-delay-800 { --nias-delay: 0.8s;  }
         .nias-delay-1s  { --nias-delay: 1s;    }
-
-        /* ─── SCRUB STRENGTH CLASSES ─── */
-        /* Controls how tightly the animation follows scroll (1=loose, 3=tight) */
-        .nias-scrub-1 { --nias-scrub: 1; }
-        .nias-scrub-2 { --nias-scrub: 2; }
-        .nias-scrub-3 { --nias-scrub: 3; }
 
         /* ─── EASE CLASSES ─── */
         .nias-ease-linear { --nias-ease: none; }
@@ -311,7 +304,7 @@
 <section class="hero">
     <div class="hero-eyebrow">NIAS Animation System — v2.0</div>
     <h1>کتابخانه انیمیشن<br><span>سه‌بعدی</span></h1>
-    <p class="hero-sub">۱۸ افکت اسکرول‌بیس + کلاس‌های duration، delay، ease و split text با GSAP</p>
+    <p class="hero-sub">۱۸ افکت ورود/خروج + کلاس‌های duration، delay، ease و split text با GSAP</p>
     <div class="scroll-hint">
         <span>SCROLL</span>
         <div class="scroll-line"></div>
@@ -387,11 +380,11 @@
         </div>
 
         <div class="doc-card">
-            <h3>🔗 قدرت scrub</h3>
+            <h3>👁 تریگر نمایش</h3>
             <div class="tag-list">
-                <span class="tag">nias-scrub-1 (شل)</span>
-                <span class="tag">nias-scrub-2 (متوسط)</span>
-                <span class="tag">nias-scrub-3 (سفت)</span>
+                <span class="tag">ورود به ناحیه دید</span>
+                <span class="tag">اجرای خودکار</span>
+                <span class="tag">خروج نرم</span>
             </div>
         </div>
 
@@ -415,7 +408,7 @@
     <div style="margin-top:2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem;">
         <p style="font-family:'Space Mono',monospace; font-size:.72rem; color:var(--muted); line-height:2;">
             <span style="color:var(--accent2)">مثال:</span>
-            &lt;img class="<span style="color:var(--accent)">nias-element nias-rotate-zoom nias-dur-lg nias-delay-200 nias-ease-expo nias-scrub-2</span>" src="..." /&gt;<br>
+            &lt;img class="<span style="color:var(--accent)">nias-element nias-rotate-zoom nias-dur-lg nias-delay-200 nias-ease-expo</span>" src="..." /&gt;<br>
             &lt;h2 class="<span style="color:var(--accent)">nias-split-chars nias-dur-md nias-delay-300</span>"&gt;متن&lt;/h2&gt;
         </p>
     </div>
@@ -445,10 +438,10 @@
         <div class="nias-info">
             <div class="nias-badge">02 — Image</div>
             <h2>Rotate X + Y</h2>
-            <p>nias-rotate-xy · nias-dur-md · nias-scrub-2</p>
+            <p>nias-rotate-xy · nias-dur-md</p>
         </div>
         <div class="nias-wrapper">
-            <img class="nias-element nias-rotate-xy nias-dur-md nias-scrub-2" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop" alt="Nature">
+            <img class="nias-element nias-rotate-xy nias-dur-md" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop" alt="Nature">
         </div>
     </div>
 </div>
@@ -497,10 +490,10 @@
         <div class="nias-info">
             <div class="nias-badge">06 — Image</div>
             <h2>Fade + Slide</h2>
-            <p>nias-fade-slide · nias-dur-md · nias-scrub-1</p>
+            <p>nias-fade-slide · nias-dur-md</p>
         </div>
         <div class="nias-wrapper">
-            <img class="nias-element nias-fade-slide nias-dur-md nias-scrub-1" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=600&fit=crop" alt="Sky">
+            <img class="nias-element nias-fade-slide nias-dur-md" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=600&fit=crop" alt="Sky">
         </div>
     </div>
 </div>
@@ -536,10 +529,10 @@
         <div class="nias-info">
             <div class="nias-badge">09 — Image</div>
             <h2>Zoom Blur</h2>
-            <p>nias-zoom-blur · nias-dur-md · nias-scrub-3</p>
+            <p>nias-zoom-blur · nias-dur-md</p>
         </div>
         <div class="nias-wrapper">
-            <img class="nias-element nias-zoom-blur nias-dur-md nias-scrub-3" src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=800&h=600&fit=crop" alt="Forest">
+            <img class="nias-element nias-zoom-blur nias-dur-md" src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=800&h=600&fit=crop" alt="Forest">
         </div>
     </div>
 </div>
@@ -601,10 +594,10 @@
         <div class="nias-info">
             <div class="nias-badge">14 — Image</div>
             <h2>Parallax Depth</h2>
-            <p>nias-parallax-depth · nias-dur-2xl · nias-scrub-2</p>
+            <p>nias-parallax-depth · nias-dur-2xl</p>
         </div>
         <div class="nias-wrapper">
-            <img class="nias-element nias-parallax-depth nias-dur-2xl nias-scrub-2" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" alt="Waterfall">
+            <img class="nias-element nias-parallax-depth nias-dur-2xl" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" alt="Waterfall">
         </div>
     </div>
 </div>
@@ -614,10 +607,10 @@
         <div class="nias-info">
             <div class="nias-badge">15 — Image</div>
             <h2>Glitch Effect</h2>
-            <p>nias-glitch · nias-dur-sm · nias-scrub-1</p>
+            <p>nias-glitch · nias-dur-sm</p>
         </div>
         <div class="nias-wrapper">
-            <img class="nias-element nias-glitch nias-dur-sm nias-scrub-1" src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop" alt="Sunset">
+            <img class="nias-element nias-glitch nias-dur-sm" src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop" alt="Sunset">
         </div>
     </div>
 </div>
@@ -758,7 +751,7 @@
 
 <!-- footer -->
 <div style="text-align:center; padding:6rem 2rem 4rem; color:var(--muted); font-family:'Space Mono',monospace; font-size:.65rem; letter-spacing:.1em;">
-    NIAS ANIMATION SYSTEM — BUILT WITH GSAP + SCROLLTRIGGER
+    NIAS ANIMATION SYSTEM — BUILT WITH GSAP + VIEWPORT TRIGGERS
 </div>
 
 <!-- ══════════════════════════════ SCRIPTS ══════════════════════════════ -->
@@ -768,7 +761,6 @@
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── HELPERS ───────────────────────────────────────────────────────────────
 function getDur(el, fallback = 1) {
     const style = getComputedStyle(el);
     const v = style.getPropertyValue('--nias-dur').trim();
@@ -779,77 +771,168 @@ function getDelay(el, fallback = 0) {
     const v = style.getPropertyValue('--nias-delay').trim();
     return v ? parseFloat(v) : fallback;
 }
-function getScrub(el, fallback = 1) {
-    const style = getComputedStyle(el);
-    const v = style.getPropertyValue('--nias-scrub').trim();
-    return v ? parseFloat(v) : fallback;
-}
 function getEase(el, fallback = 'none') {
     const style = getComputedStyle(el);
     const v = style.getPropertyValue('--nias-ease').trim();
     return v || fallback;
 }
 
-// Makes a scrollTrigger config — scrub-only for images
-function makeST(section, el, scrubOverride = null) {
-    return {
+function makeViewportTrigger(section, callbacks = {}) {
+    return ScrollTrigger.create({
         trigger: section,
-        start: 'top 80%',
-        end: 'center center',
-        scrub: scrubOverride !== null ? scrubOverride : getScrub(el),
-    };
+        start: callbacks.start || 'top 78%',
+        end: callbacks.end || 'bottom 22%',
+        onEnter: callbacks.onEnter,
+        onLeave: callbacks.onLeave,
+        onEnterBack: callbacks.onEnterBack,
+        onLeaveBack: callbacks.onLeaveBack,
+    });
 }
 
-// ─── MANUAL SPLIT (no plugin needed) ───────────────────────────────────────
 function splitToChars(el) {
     const text = el.textContent;
-    el.innerHTML = [...text].map(c =>
-        c === ' ' ? '<span class="split-char" style="display:inline-block"> </span>'
-                  : `<span class="split-char" style="display:inline-block">${c}</span>`
-    ).join('');
+    el.innerHTML = [...text].map(char => (
+        char === ' '
+            ? '<span class="split-char">&nbsp;</span>'
+            : `<span class="split-char">${char}</span>`
+    )).join('');
     return el.querySelectorAll('.split-char');
 }
 
 function splitToWords(el) {
     const text = el.textContent;
-    el.innerHTML = text.split(/(\s+)/).map(w =>
-        w.trim() ? `<span class="split-word" style="display:inline-block">${w}</span>`
-                 : w
-    ).join('');
+    el.innerHTML = text.split(/(\s+)/).map(word => (
+        word.trim() ? `<span class="split-word">${word}</span>` : word
+    )).join('');
     return el.querySelectorAll('.split-word');
 }
 
 function splitToLines(el) {
-    // wrap whole content in line spans, split by <br> then natural wrap
     const html = el.innerHTML;
     const parts = html.split(/<br\s*\/?>/i);
-    el.innerHTML = parts.map(p =>
-        `<span class="line-wrap"><span class="split-line" style="display:inline-block">${p.trim()}</span></span>`
-    ).join('');
+    el.innerHTML = parts.map(part => (
+        `<span class="line-wrap"><span class="split-line">${part.trim()}</span></span>`
+    )).join('');
     return el.querySelectorAll('.split-line');
 }
 
-// ─── HERO INTRO ────────────────────────────────────────────────────────────
+function tweenTo(targets, vars) {
+    return gsap.to(targets, { overwrite: 'auto', ...vars });
+}
+
+function buildExitState(fromVars, direction) {
+    const exitVars = { ...fromVars };
+    const directionSign = direction === 'forward' ? -1 : 1;
+
+    if (!('opacity' in exitVars)) {
+        exitVars.opacity = 0;
+    }
+
+    if ('y' in exitVars && typeof exitVars.y === 'number') {
+        exitVars.y = Math.max(Math.abs(exitVars.y), 80) * directionSign;
+    } else if ('yPercent' in exitVars && typeof exitVars.yPercent === 'number') {
+        exitVars.yPercent = Math.max(Math.abs(exitVars.yPercent), 110) * directionSign;
+    } else if (!('x' in exitVars) && !('z' in exitVars)) {
+        exitVars.y = 80 * directionSign;
+    }
+
+    if (!('scale' in exitVars) && !('scaleX' in exitVars) && !('scaleY' in exitVars)) {
+        exitVars.scale = 0.92;
+    }
+
+    return exitVars;
+}
+
+function setupViewportAnimation(el, fromVars, visibleVars, options = {}) {
+    const section = el.closest('.nias-section');
+    if (!section) return;
+
+    const dur = getDur(el, options.fallbackDuration ?? 1);
+    const delay = getDelay(el, 0);
+    const ease = getEase(el, options.fallbackEase ?? 'power2.out');
+
+    gsap.set(el, fromVars);
+
+    makeViewportTrigger(section, {
+        start: options.start,
+        end: options.end,
+        onEnter: () => tweenTo(el, {
+            ...visibleVars,
+            duration: dur,
+            delay,
+            ease,
+        }),
+        onLeave: () => tweenTo(el, {
+            ...buildExitState(fromVars, 'forward'),
+            duration: Math.max(dur * 0.65, 0.35),
+            ease: 'power2.in',
+        }),
+        onEnterBack: () => tweenTo(el, {
+            ...visibleVars,
+            duration: Math.max(dur * 0.85, 0.45),
+            ease,
+        }),
+        onLeaveBack: () => tweenTo(el, {
+            ...buildExitState(fromVars, 'backward'),
+            duration: Math.max(dur * 0.65, 0.35),
+            ease: 'power2.in',
+        }),
+    });
+}
+
+function setupStaggerAnimation(el, splitFn, fromVars, visibleVars, options = {}) {
+    const section = el.closest('.nias-section');
+    if (!section) return;
+
+    const targets = splitFn(el);
+    const dur = getDur(el, options.fallbackDuration ?? 1);
+    const delay = getDelay(el, 0);
+    const ease = getEase(el, options.fallbackEase ?? 'power2.out');
+    const stagger = options.stagger ?? 0.05;
+
+    gsap.set(targets, fromVars);
+
+    makeViewportTrigger(section, {
+        start: options.start,
+        end: options.end,
+        onEnter: () => tweenTo(targets, {
+            ...visibleVars,
+            duration: dur,
+            delay,
+            ease,
+            stagger,
+        }),
+        onLeave: () => tweenTo(targets, {
+            ...buildExitState(fromVars, 'forward'),
+            duration: Math.max(dur * 0.55, 0.35),
+            ease: 'power2.in',
+            stagger: options.exitStagger ?? 0.02,
+        }),
+        onEnterBack: () => tweenTo(targets, {
+            ...visibleVars,
+            duration: Math.max(dur * 0.85, 0.45),
+            ease,
+            stagger,
+        }),
+        onLeaveBack: () => tweenTo(targets, {
+            ...buildExitState(fromVars, 'backward'),
+            duration: Math.max(dur * 0.55, 0.35),
+            ease: 'power2.in',
+            stagger: options.exitStagger ?? 0.02,
+        }),
+    });
+}
+
 const heroTl = gsap.timeline({ delay: .2 });
 heroTl
     .to('.hero-eyebrow', { opacity: 1, y: 0, duration: .8, ease: 'power2.out' })
     .fromTo('.hero h1',  { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .9, ease: 'power2.out' }, '-=.3')
     .fromTo('.hero-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, '-=.4');
 
-// ─── IMAGE ANIMATIONS ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-
     const define = (selector, from, toOverrides = {}) => {
         document.querySelectorAll(selector).forEach(el => {
-            const section = el.closest('.nias-section');
-            if (!section) return;
-            const to = Object.assign({ ease: getEase(el), ...toOverrides }, {});
-            // for scrub animations ease is typically 'none' unless class overrides
-            gsap.fromTo(el, from, {
-                ...to,
-                ease: getEase(el, 'none'),
-                scrollTrigger: makeST(section, el),
-            });
+            setupViewportAnimation(el, from, toOverrides);
         });
     };
 
@@ -925,77 +1008,52 @@ document.addEventListener('DOMContentLoaded', () => {
         { rotateX: -30, rotateY: 30, filter: 'blur(10px)', scale: 0.8, opacity: 0 },
         { rotateX: 0, rotateY: 0, filter: 'blur(0px)', scale: 1, opacity: 1 });
 
-    // ─── NIAS-INFO text fade ────────────────────────────────────────────
     document.querySelectorAll('.nias-info').forEach(info => {
-        const section = info.closest('.nias-section');
-        gsap.fromTo(info,
+        setupViewportAnimation(
+            info,
             { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, ease: 'power2.out',
-              scrollTrigger: { trigger: section, start: 'top 70%', end: 'top 40%', scrub: 1 } });
+            { opacity: 1, y: 0 },
+            { fallbackDuration: 0.8, fallbackEase: 'power2.out', start: 'top 82%', end: 'bottom 28%' }
+        );
     });
 
-    // ══════════════════════════════════════════════════════════════════
-    // SPLIT TEXT ANIMATIONS
-    // ══════════════════════════════════════════════════════════════════
-
-    // ── 19: nias-split-chars ──────────────────────────────────────────
     document.querySelectorAll('.nias-split-chars').forEach(el => {
-        const section = el.closest('.nias-section');
-        if (!section) return;
-        const chars = splitToChars(el);
-        const dur   = getDur(el, 1.6);
-        const delay = getDelay(el, 0);
-        const ease  = getEase(el, 'back.out(1.7)');
-        gsap.from(chars, {
-            opacity: 0, y: 60, rotateX: -90,
-            duration: dur * 0.35,
-            ease,
-            stagger: { each: 0.04, from: 'start' },
-            delay,
-            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
-        });
+        setupStaggerAnimation(
+            el,
+            splitToChars,
+            { opacity: 0, y: 60, rotateX: -90 },
+            { opacity: 1, y: 0, rotateX: 0 },
+            { fallbackDuration: 0.7, fallbackEase: 'back.out(1.7)', stagger: { each: 0.04, from: 'start' } }
+        );
     });
 
-    // ── 20: nias-split-words ─────────────────────────────────────────
     document.querySelectorAll('.nias-split-words').forEach(el => {
-        const section = el.closest('.nias-section');
-        if (!section) return;
-        const words = splitToWords(el);
-        const dur   = getDur(el, 1.2);
-        const ease  = getEase(el, 'expo.out');
-        gsap.from(words, {
-            opacity: 0, y: 50, skewX: 10,
-            duration: dur * 0.5,
-            ease,
-            stagger: 0.1,
-            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
-        });
+        setupStaggerAnimation(
+            el,
+            splitToWords,
+            { opacity: 0, y: 50, skewX: 10 },
+            { opacity: 1, y: 0, skewX: 0 },
+            { fallbackDuration: 0.8, fallbackEase: 'expo.out', stagger: 0.1 }
+        );
     });
 
-    // ── 21: nias-split-lines ─────────────────────────────────────────
     document.querySelectorAll('.nias-split-lines').forEach(el => {
-        const section = el.closest('.nias-section');
-        if (!section) return;
-        const lines = splitToLines(el);
-        const dur   = getDur(el, 1);
-        const ease  = getEase(el, 'power3.out');
-        gsap.from(lines, {
-            y: '110%',
-            opacity: 0,
-            duration: dur * 0.6,
-            ease,
-            stagger: 0.15,
-            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
-        });
+        setupStaggerAnimation(
+            el,
+            splitToLines,
+            { yPercent: 110, opacity: 0 },
+            { yPercent: 0, opacity: 1 },
+            { fallbackDuration: 0.7, fallbackEase: 'power3.out', stagger: 0.15 }
+        );
     });
 
-    // ── 22: nias-text-glitch ─────────────────────────────────────────
     document.querySelectorAll('.nias-text-glitch').forEach(el => {
         const section = el.closest('.nias-section');
         if (!section) return;
         const original = el.textContent;
         const chars = '!<>-_\\/[]{}—=+*^?#░▒▓';
-        let frame, iter = 0, started = false;
+        let frame;
+        let iter = 0;
 
         const scramble = () => {
             el.innerText = original.split('').map((c, i) => {
@@ -1008,52 +1066,56 @@ document.addEventListener('DOMContentLoaded', () => {
             else el.innerText = original;
         };
 
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 75%',
-            onEnter: () => { if (!started) { started = true; scramble(); } },
-            onLeaveBack: () => { started = false; cancelAnimationFrame(frame); el.innerText = original; },
+        const playGlitch = () => {
+            cancelAnimationFrame(frame);
+            iter = 0;
+            gsap.set(el, { opacity: 1, y: 0 });
+            scramble();
+        };
+
+        const hideGlitch = direction => {
+            cancelAnimationFrame(frame);
+            tweenTo(el, {
+                opacity: 0,
+                y: direction === 'forward' ? -30 : 30,
+                duration: 0.35,
+                ease: 'power2.in',
+                onComplete: () => {
+                    el.innerText = original;
+                    gsap.set(el, { y: 0 });
+                },
+            });
+        };
+
+        makeViewportTrigger(section, {
+            onEnter: playGlitch,
+            onLeave: () => hideGlitch('forward'),
+            onEnterBack: playGlitch,
+            onLeaveBack: () => hideGlitch('backward'),
         });
 
-        // subtle continuous glitch pulse
         gsap.to(el, {
             skewX: 3, duration: .08, repeat: -1, yoyo: true,
             ease: 'steps(1)', repeatDelay: 3,
         });
     });
 
-    // ── 23: nias-text-wave ───────────────────────────────────────────
     document.querySelectorAll('.nias-text-wave').forEach(el => {
-        const section = el.closest('.nias-section');
-        if (!section) return;
-        const chars = splitToChars(el);
-        const dur   = getDur(el, 2);
-        const ease  = getEase(el, 'elastic.out(1,0.4)');
-
-        gsap.set(chars, { opacity: 0, y: 80 });
-
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 75%',
-            onEnter: () => {
-                gsap.to(chars, {
-                    opacity: 1, y: 0,
-                    ease,
-                    duration: dur * 0.4,
-                    stagger: { each: 0.05, from: 'start' },
-                });
-            },
-            onLeaveBack: () => gsap.set(chars, { opacity: 0, y: 80 }),
-        });
+        setupStaggerAnimation(
+            el,
+            splitToChars,
+            { opacity: 0, y: 80 },
+            { opacity: 1, y: 0 },
+            { fallbackDuration: 0.8, fallbackEase: 'elastic.out(1,0.4)', stagger: { each: 0.05, from: 'start' } }
+        );
     });
 
-    // ── 24: nias-text-scramble ───────────────────────────────────────
     document.querySelectorAll('.nias-text-scramble').forEach(el => {
         const section = el.closest('.nias-section');
         if (!section) return;
         const original = el.textContent;
         const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
-        let started = false;
+        let frame;
 
         const reveal = () => {
             let progress = 0;
@@ -1065,33 +1127,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     return pool[Math.floor(Math.random() * pool.length)];
                 }).join('');
                 progress += .5;
-                if (progress <= total) requestAnimationFrame(step);
+                if (progress <= total) frame = requestAnimationFrame(step);
                 else el.innerText = original;
             };
-            requestAnimationFrame(step);
+            frame = requestAnimationFrame(step);
         };
 
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 75%',
-            onEnter: () => { if (!started) { started = true; reveal(); } },
-            onLeaveBack: () => { started = false; el.innerText = original; },
+        const playScramble = () => {
+            cancelAnimationFrame(frame);
+            gsap.set(el, { opacity: 1, y: 0 });
+            reveal();
+        };
+
+        const hideScramble = direction => {
+            cancelAnimationFrame(frame);
+            tweenTo(el, {
+                opacity: 0,
+                y: direction === 'forward' ? -24 : 24,
+                duration: 0.3,
+                ease: 'power2.in',
+                onComplete: () => {
+                    el.innerText = original;
+                    gsap.set(el, { y: 0 });
+                },
+            });
+        };
+
+        makeViewportTrigger(section, {
+            onEnter: playScramble,
+            onLeave: () => hideScramble('forward'),
+            onEnterBack: playScramble,
+            onLeaveBack: () => hideScramble('backward'),
         });
     });
 
-    // ── 25: nias-text-typewriter ─────────────────────────────────────
     document.querySelectorAll('.nias-text-typewriter').forEach(el => {
         const section = el.closest('.nias-section');
         if (!section) return;
         const original = el.textContent;
         const dur = getDur(el, 2);
         const charDelay = (dur * 1000) / original.length;
-        let timeout, started = false;
+        let timeout;
 
         el.style.borderLeft = '2px solid var(--accent)';
         el.style.paddingLeft = '2px';
 
         const type = () => {
+            clearTimeout(timeout);
             el.textContent = '';
             let i = 0;
             const tick = () => {
@@ -1102,19 +1184,37 @@ document.addEventListener('DOMContentLoaded', () => {
             tick();
         };
 
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 75%',
-            onEnter: () => { if (!started) { started = true; type(); } },
-            onLeaveBack: () => { started = false; clearTimeout(timeout); el.textContent = ''; },
+        const showTypewriter = () => {
+            gsap.set(el, { opacity: 1, y: 0 });
+            type();
+        };
+
+        const hideTypewriter = direction => {
+            clearTimeout(timeout);
+            tweenTo(el, {
+                opacity: 0,
+                y: direction === 'forward' ? -20 : 20,
+                duration: 0.3,
+                ease: 'power2.in',
+                onComplete: () => {
+                    el.textContent = '';
+                    gsap.set(el, { y: 0 });
+                },
+            });
+        };
+
+        makeViewportTrigger(section, {
+            onEnter: showTypewriter,
+            onLeave: () => hideTypewriter('forward'),
+            onEnterBack: showTypewriter,
+            onLeaveBack: () => hideTypewriter('backward'),
         });
     });
 
-    // ── 26: nias-text-reveal (mask) ──────────────────────────────────
     document.querySelectorAll('.nias-text-reveal').forEach(el => {
         const section = el.closest('.nias-section');
         if (!section) return;
-        // wrap in a clip container
+
         const inner = document.createElement('span');
         inner.style.cssText = 'display:block; overflow:hidden;';
         const text = document.createElement('span');
@@ -1124,54 +1224,49 @@ document.addEventListener('DOMContentLoaded', () => {
         el.innerHTML = '';
         el.appendChild(inner);
 
-        gsap.from(text, {
-            yPercent: 110,
-            duration: 1.2,
-            ease: 'expo.out',
-            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
+        gsap.set(text, { yPercent: 110 });
+
+        makeViewportTrigger(section, {
+            onEnter: () => tweenTo(text, {
+                yPercent: 0,
+                duration: 1.2,
+                ease: 'expo.out',
+            }),
+            onLeave: () => tweenTo(text, {
+                yPercent: -110,
+                duration: 0.45,
+                ease: 'power2.in',
+            }),
+            onEnterBack: () => tweenTo(text, {
+                yPercent: 0,
+                duration: 0.9,
+                ease: 'expo.out',
+            }),
+            onLeaveBack: () => tweenTo(text, {
+                yPercent: 110,
+                duration: 0.45,
+                ease: 'power2.in',
+            }),
         });
     });
 
-    // ── 27: nias-text-explode ────────────────────────────────────────
     document.querySelectorAll('.nias-text-explode').forEach(el => {
-        const section = el.closest('.nias-section');
-        if (!section) return;
-        const chars = splitToChars(el);
-        const dur   = getDur(el, 2);
-        const ease  = getEase(el, 'expo.out');
-
-        gsap.set(chars, {
-            opacity: 0,
-            x: () => (Math.random() - .5) * 400,
-            y: () => (Math.random() - .5) * 300,
-            rotateZ: () => (Math.random() - .5) * 180,
-            scale: () => Math.random() * 2 + .5,
-        });
-
-        ScrollTrigger.create({
-            trigger: section,
-            start: 'top 75%',
-            onEnter: () => {
-                gsap.to(chars, {
-                    opacity: 1, x: 0, y: 0, rotateZ: 0, scale: 1,
-                    ease,
-                    duration: dur * 0.4,
-                    stagger: { each: 0.04, from: 'random' },
-                });
+        setupStaggerAnimation(
+            el,
+            splitToChars,
+            {
+                opacity: 0,
+                x: () => (Math.random() - .5) * 400,
+                y: () => (Math.random() - .5) * 300,
+                rotateZ: () => (Math.random() - .5) * 180,
+                scale: () => Math.random() * 2 + .5,
             },
-            onLeaveBack: () => {
-                gsap.set(chars, {
-                    opacity: 0,
-                    x: () => (Math.random() - .5) * 400,
-                    y: () => (Math.random() - .5) * 300,
-                    rotateZ: () => (Math.random() - .5) * 180,
-                    scale: () => Math.random() * 2 + .5,
-                });
-            },
-        });
+            { opacity: 1, x: 0, y: 0, rotateZ: 0, scale: 1 },
+            { fallbackDuration: 0.8, fallbackEase: 'expo.out', stagger: { each: 0.04, from: 'random' } }
+        );
     });
 
-}); // end DOMContentLoaded
+});
 </script>
 
 </body>
