@@ -3,815 +3,1176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Image Animation - Class Based</title>
+    <title>NIAS 3D Animation Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #050508;
+            --surface: #0e0e14;
+            --border: rgba(255,255,255,0.07);
+            --accent: #7c6dfa;
+            --accent2: #fa6d7c;
+            --text: #e8e6f0;
+            --muted: rgba(232,230,240,0.4);
+            --glow: 0 0 40px rgba(124,109,250,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
         }
 
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(124,109,250,0.12) 0%, transparent 70%);
+        }
+        .hero-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero-sub {
+            font-size: clamp(.9rem, 2vw, 1.15rem);
+            color: var(--muted);
+            max-width: 520px;
+            line-height: 1.8;
+            opacity: 0;
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            opacity: .4;
+        }
+        .scroll-hint span {
+            font-size: .65rem;
+            letter-spacing: .2em;
+            font-family: 'Space Mono', monospace;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%,100% { opacity: .4; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        /* ─── DOCS SECTION ─── */
+        .docs-section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .docs-section h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+        }
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .doc-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+        }
+        .doc-card h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: .8rem;
+            color: var(--accent2);
+            margin-bottom: .75rem;
+            letter-spacing: .05em;
+        }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+        }
+        .tag {
+            background: rgba(124,109,250,0.1);
+            border: 1px solid rgba(124,109,250,0.2);
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+            font-size: .65rem;
+            padding: .25rem .6rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        .tag.red { background: rgba(250,109,124,0.1); border-color: rgba(250,109,124,0.2); color: var(--accent2); }
+        .tag.green { background: rgba(109,250,168,0.1); border-color: rgba(109,250,168,0.2); color: #6dfaa8; }
+
+        /* ─── DIVIDER ─── */
+        .section-divider {
+            text-align: center;
+            padding: 2rem 0 0;
+            position: relative;
+        }
+        .section-divider::before {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
+            margin-bottom: 2rem;
+        }
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: .75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+            opacity: .5;
+        }
+
+        /* ─── ANIMATION SECTIONS ─── */
         .nias-section {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 4rem 2rem;
             position: relative;
+        }
+        .nias-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
         }
 
         .nias-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 620px;
             perspective: 1500px;
         }
+
+        .nias-info {
+            margin-bottom: 2rem;
+        }
+        .nias-badge {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid rgba(124,109,250,0.3);
+            padding: .3rem .7rem;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .nias-info h2 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: .5rem;
+            overflow: hidden;
+        }
+        .nias-info p {
+            font-family: 'Space Mono', monospace;
+            font-size: .72rem;
+            color: var(--muted);
+            overflow: hidden;
+        }
+
+        /* split text lines */
+        .line-wrap { overflow: hidden; display: block; }
 
         .nias-wrapper {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* نسبت 4:3 */
+            padding-bottom: 66%;
             transform-style: preserve-3d;
         }
-
         .nias-element {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), var(--glow);
             transform-style: preserve-3d;
         }
 
-        .nias-info {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: white;
-        }
+        /* ─── DURATION CLASSES ─── */
+        /* Used only for non-scrub (trigger-based) animations */
+        .nias-dur-xs  { --nias-dur: 0.3s; }
+        .nias-dur-sm  { --nias-dur: 0.6s; }
+        .nias-dur-md  { --nias-dur: 1s;   }
+        .nias-dur-lg  { --nias-dur: 1.6s; }
+        .nias-dur-xl  { --nias-dur: 2.5s; }
+        .nias-dur-2xl { --nias-dur: 4s;   }
 
-        .nias-info h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
+        /* ─── DELAY CLASSES ─── */
+        .nias-delay-0   { --nias-delay: 0s;    }
+        .nias-delay-100 { --nias-delay: 0.1s;  }
+        .nias-delay-200 { --nias-delay: 0.2s;  }
+        .nias-delay-300 { --nias-delay: 0.3s;  }
+        .nias-delay-500 { --nias-delay: 0.5s;  }
+        .nias-delay-800 { --nias-delay: 0.8s;  }
+        .nias-delay-1s  { --nias-delay: 1s;    }
 
-        .nias-info p {
-            font-size: 1rem;
-            opacity: 0.6;
-        }
+        /* ─── SCRUB STRENGTH CLASSES ─── */
+        /* Controls how tightly the animation follows scroll (1=loose, 3=tight) */
+        .nias-scrub-1 { --nias-scrub: 1; }
+        .nias-scrub-2 { --nias-scrub: 2; }
+        .nias-scrub-3 { --nias-scrub: 3; }
 
+        /* ─── EASE CLASSES ─── */
+        .nias-ease-linear { --nias-ease: none; }
+        .nias-ease-power2 { --nias-ease: power2.out; }
+        .nias-ease-back   { --nias-ease: back.out(1.4); }
+        .nias-ease-expo   { --nias-ease: expo.out; }
+        .nias-ease-bounce { --nias-ease: bounce.out; }
+        .nias-ease-elastic{ --nias-ease: elastic.out(1,0.4); }
+
+        /* ─── SPLIT TEXT DISPLAY ─── */
+        .split-char, .split-word, .split-line { display: inline-block; }
+
+        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
-            .nias-container {
-                max-width: 90%;
-            }
-            .nias-info h2 {
-                font-size: 1.5rem;
-            }
+            .nias-container { max-width: 92%; }
+            .nias-info h2   { font-size: 1.5rem; }
+            .docs-grid      { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- انیمیشن نوع 1: rotate-zoom -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Rotate Y + Zoom</h2>
-                <p>کلاس: nias-rotate-zoom</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-rotate-zoom" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Mountain">
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="hero-eyebrow">NIAS Animation System — v2.0</div>
+    <h1>کتابخانه انیمیشن<br><span>سه‌بعدی</span></h1>
+    <p class="hero-sub">۱۸ افکت اسکرول‌بیس + کلاس‌های duration، delay، ease و split text با GSAP</p>
+    <div class="scroll-hint">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     DOCS
+════════════════════════════════════════════════ -->
+<div class="docs-section">
+    <h2>// راهنمای استفاده</h2>
+    <div class="docs-grid">
+
+        <div class="doc-card">
+            <h3>🎬 انیمیشن‌های تصویر</h3>
+            <div class="tag-list">
+                <span class="tag">nias-rotate-zoom</span>
+                <span class="tag">nias-rotate-xy</span>
+                <span class="tag">nias-rotate-360</span>
+                <span class="tag">nias-cube-flip</span>
+                <span class="tag">nias-twist-scale</span>
+                <span class="tag">nias-fade-slide</span>
+                <span class="tag">nias-perspective-shift</span>
+                <span class="tag">nias-flip-card</span>
+                <span class="tag">nias-zoom-blur</span>
+                <span class="tag">nias-spiral</span>
+                <span class="tag">nias-wave</span>
+                <span class="tag">nias-bounce-3d</span>
+                <span class="tag">nias-fold</span>
+                <span class="tag">nias-parallax-depth</span>
+                <span class="tag">nias-glitch</span>
+                <span class="tag">nias-morph</span>
+                <span class="tag">nias-reveal-diagonal</span>
+                <span class="tag">nias-tilt-shift</span>
             </div>
         </div>
-    </div>
 
-    <!-- انیمیشن نوع 2: rotate-xy -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Rotate X + Y</h2>
-                <p>کلاس: nias-rotate-xy</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-rotate-xy" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop" alt="Nature">
-            </div>
-        </div>
-    </div>
-
-    <!-- انیمیشن نوع 3: rotate-360 -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Rotate 360</h2>
-                <p>کلاس: nias-rotate-360</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-rotate-360" src="https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=800&h=600&fit=crop" alt="Ocean">
+        <div class="doc-card">
+            <h3>⏱ مدت زمان (duration)</h3>
+            <div class="tag-list">
+                <span class="tag red">nias-dur-xs → 0.3s</span>
+                <span class="tag red">nias-dur-sm → 0.6s</span>
+                <span class="tag red">nias-dur-md → 1s</span>
+                <span class="tag red">nias-dur-lg → 1.6s</span>
+                <span class="tag red">nias-dur-xl → 2.5s</span>
+                <span class="tag red">nias-dur-2xl → 4s</span>
             </div>
         </div>
-    </div>
 
-    <!-- انیمیشن نوع 4: cube-flip -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Cube Flip</h2>
-                <p>کلاس: nias-cube-flip</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-cube-flip" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=600&fit=crop" alt="Desert">
-            </div>
-        </div>
-    </div>
-
-    <!-- انیمیشن نوع 5: twist-scale -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Twist + Scale</h2>
-                <p>کلاس: nias-twist-scale</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-twist-scale" src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=600&fit=crop" alt="City">
+        <div class="doc-card">
+            <h3>⏰ تأخیر (delay)</h3>
+            <div class="tag-list">
+                <span class="tag green">nias-delay-0</span>
+                <span class="tag green">nias-delay-100</span>
+                <span class="tag green">nias-delay-200</span>
+                <span class="tag green">nias-delay-300</span>
+                <span class="tag green">nias-delay-500</span>
+                <span class="tag green">nias-delay-800</span>
+                <span class="tag green">nias-delay-1s</span>
             </div>
         </div>
-    </div>
 
-    <!-- انیمیشن نوع 6: fade-slide -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Fade + Slide</h2>
-                <p>کلاس: nias-fade-slide</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-fade-slide" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=600&fit=crop" alt="Sky">
-            </div>
-        </div>
-    </div>
-
-    <!-- انیمیشن نوع 7: perspective-shift -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Perspective Shift</h2>
-                <p>کلاس: nias-perspective-shift</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-perspective-shift" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" alt="Mountain Peak">
+        <div class="doc-card">
+            <h3>🎯 نوع ease</h3>
+            <div class="tag-list">
+                <span class="tag">nias-ease-linear</span>
+                <span class="tag">nias-ease-power2</span>
+                <span class="tag">nias-ease-back</span>
+                <span class="tag">nias-ease-expo</span>
+                <span class="tag">nias-ease-bounce</span>
+                <span class="tag">nias-ease-elastic</span>
             </div>
         </div>
-    </div>
 
-    <!-- انیمیشن نوع 8: flip-card -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Flip Card</h2>
-                <p>کلاس: nias-flip-card</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-flip-card" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop" alt="Lake">
+        <div class="doc-card">
+            <h3>🔗 قدرت scrub</h3>
+            <div class="tag-list">
+                <span class="tag">nias-scrub-1 (شل)</span>
+                <span class="tag">nias-scrub-2 (متوسط)</span>
+                <span class="tag">nias-scrub-3 (سفت)</span>
             </div>
         </div>
-    </div>
 
-    <!-- انیمیشن نوع 9: zoom-blur -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Zoom Blur</h2>
-                <p>کلاس: nias-zoom-blur</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-zoom-blur" src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=800&h=600&fit=crop" alt="Forest">
-            </div>
-        </div>
-    </div>
-
-    <!-- انیمیشن نوع 10: spiral -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Spiral Rotation</h2>
-                <p>کلاس: nias-spiral</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-spiral" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop" alt="River">
+        <div class="doc-card">
+            <h3>✂️ Split Text</h3>
+            <div class="tag-list">
+                <span class="tag">nias-split-chars</span>
+                <span class="tag">nias-split-words</span>
+                <span class="tag">nias-split-lines</span>
+                <span class="tag">nias-text-glitch</span>
+                <span class="tag">nias-text-wave</span>
+                <span class="tag">nias-text-scramble</span>
+                <span class="tag">nias-text-typewriter</span>
+                <span class="tag">nias-text-reveal</span>
+                <span class="tag">nias-text-explode</span>
             </div>
         </div>
+
     </div>
 
-    <!-- انیمیشن نوع 11: wave -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Wave Effect</h2>
-                <p>کلاس: nias-wave</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-wave" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop" alt="Beach">
-            </div>
+    <div style="margin-top:2rem; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.5rem;">
+        <p style="font-family:'Space Mono',monospace; font-size:.72rem; color:var(--muted); line-height:2;">
+            <span style="color:var(--accent2)">مثال:</span>
+            &lt;img class="<span style="color:var(--accent)">nias-element nias-rotate-zoom nias-dur-lg nias-delay-200 nias-ease-expo nias-scrub-2</span>" src="..." /&gt;<br>
+            &lt;h2 class="<span style="color:var(--accent)">nias-split-chars nias-dur-md nias-delay-300</span>"&gt;متن&lt;/h2&gt;
+        </p>
+    </div>
+</div>
+
+<div class="section-divider">
+    <span class="section-label">انیمیشن‌های تصویر</span>
+</div>
+
+<!-- ══════════════════════════════ IMAGE ANIMATIONS ══════════════════════════════ -->
+
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">01 — Image</div>
+            <h2>Rotate Y + Zoom</h2>
+            <p>nias-rotate-zoom · nias-dur-lg · nias-ease-expo</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-rotate-zoom nias-dur-lg nias-ease-expo" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Mountain">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 12: bounce-3d -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>3D Bounce</h2>
-                <p>کلاس: nias-bounce-3d</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-bounce-3d" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop" alt="Clouds">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">02 — Image</div>
+            <h2>Rotate X + Y</h2>
+            <p>nias-rotate-xy · nias-dur-md · nias-scrub-2</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-rotate-xy nias-dur-md nias-scrub-2" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop" alt="Nature">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 13: fold -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Paper Fold</h2>
-                <p>کلاس: nias-fold</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-fold" src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=600&fit=crop" alt="Flower">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">03 — Image</div>
+            <h2>Rotate 360</h2>
+            <p>nias-rotate-360 · nias-dur-2xl</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-rotate-360 nias-dur-2xl" src="https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=800&h=600&fit=crop" alt="Ocean">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 14: parallax-depth -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Parallax Depth</h2>
-                <p>کلاس: nias-parallax-depth</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-parallax-depth" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" alt="Waterfall">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">04 — Image</div>
+            <h2>Cube Flip</h2>
+            <p>nias-cube-flip · nias-dur-lg · nias-ease-back</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-cube-flip nias-dur-lg nias-ease-back" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=600&fit=crop" alt="Desert">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 15: glitch -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Glitch Effect</h2>
-                <p>کلاس: nias-glitch</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-glitch" src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop" alt="Sunset">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">05 — Image</div>
+            <h2>Twist + Scale</h2>
+            <p>nias-twist-scale · nias-dur-xl</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-twist-scale nias-dur-xl" src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&h=600&fit=crop" alt="City">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 16: morph -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Morph Scale</h2>
-                <p>کلاس: nias-morph</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-morph" src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&h=600&fit=crop" alt="Valley">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">06 — Image</div>
+            <h2>Fade + Slide</h2>
+            <p>nias-fade-slide · nias-dur-md · nias-scrub-1</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-fade-slide nias-dur-md nias-scrub-1" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=600&fit=crop" alt="Sky">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 17: reveal-diagonal -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Diagonal Reveal</h2>
-                <p>کلاس: nias-reveal-diagonal</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-reveal-diagonal" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Peak">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">07 — Image</div>
+            <h2>Perspective Shift</h2>
+            <p>nias-perspective-shift · nias-dur-lg</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-perspective-shift nias-dur-lg" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" alt="Mountain Peak">
         </div>
     </div>
+</div>
 
-    <!-- انیمیشن نوع 18: tilt-shift -->
-    <div class="nias-section">
-        <div class="nias-container">
-            <div class="nias-info">
-                <h2>Tilt Shift</h2>
-                <p>کلاس: nias-tilt-shift</p>
-            </div>
-            <div class="nias-wrapper">
-                <img class="nias-element nias-tilt-shift" src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop" alt="Grass">
-            </div>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">08 — Image</div>
+            <h2>Flip Card</h2>
+            <p>nias-flip-card · nias-dur-xl · nias-ease-power2</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-flip-card nias-dur-xl nias-ease-power2" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop" alt="Lake">
         </div>
     </div>
+</div>
 
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">09 — Image</div>
+            <h2>Zoom Blur</h2>
+            <p>nias-zoom-blur · nias-dur-md · nias-scrub-3</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-zoom-blur nias-dur-md nias-scrub-3" src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=800&h=600&fit=crop" alt="Forest">
+        </div>
+    </div>
+</div>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">10 — Image</div>
+            <h2>Spiral Rotation</h2>
+            <p>nias-spiral · nias-dur-lg</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-spiral nias-dur-lg" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop" alt="River">
+        </div>
+    </div>
+</div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // انیمیشن 1: Rotate Y + Zoom
-            const niasRotateZoom = document.querySelectorAll('.nias-rotate-zoom');
-            niasRotateZoom.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateY: -45,
-                        scale: 0.8,
-                        opacity: 0.3,
-                    },
-                    {
-                        rotateY: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">11 — Image</div>
+            <h2>Wave Effect</h2>
+            <p>nias-wave · nias-dur-md</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-wave nias-dur-md" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop" alt="Beach">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 2: Rotate X + Y
-            const niasRotateXY = document.querySelectorAll('.nias-rotate-xy');
-            niasRotateXY.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: 45,
-                        rotateY: 45,
-                        opacity: 0.3,
-                    },
-                    {
-                        rotateX: 0,
-                        rotateY: 0,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">12 — Image</div>
+            <h2>3D Bounce</h2>
+            <p>nias-bounce-3d · nias-dur-xl · nias-ease-bounce</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-bounce-3d nias-dur-xl nias-ease-bounce" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop" alt="Clouds">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 3: Rotate 360
-            const niasRotate360 = document.querySelectorAll('.nias-rotate-360');
-            niasRotate360.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateY: 0,
-                        scale: 0.5,
-                    },
-                    {
-                        rotateY: 360,
-                        scale: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'bottom 20%',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">13 — Image</div>
+            <h2>Paper Fold</h2>
+            <p>nias-fold · nias-dur-lg · nias-ease-power2</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-fold nias-dur-lg nias-ease-power2" src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&h=600&fit=crop" alt="Flower">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 4: Cube Flip
-            const niasCubeFlip = document.querySelectorAll('.nias-cube-flip');
-            niasCubeFlip.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: -90,
-                        rotateZ: -45,
-                        scale: 0.7,
-                        opacity: 0,
-                    },
-                    {
-                        rotateX: 0,
-                        rotateZ: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">14 — Image</div>
+            <h2>Parallax Depth</h2>
+            <p>nias-parallax-depth · nias-dur-2xl · nias-scrub-2</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-parallax-depth nias-dur-2xl nias-scrub-2" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" alt="Waterfall">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 5: Twist + Scale
-            const niasTwistScale = document.querySelectorAll('.nias-twist-scale');
-            niasTwistScale.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateY: 180,
-                        rotateX: 30,
-                        scale: 1.5,
-                        opacity: 0,
-                    },
-                    {
-                        rotateY: 0,
-                        rotateX: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">15 — Image</div>
+            <h2>Glitch Effect</h2>
+            <p>nias-glitch · nias-dur-sm · nias-scrub-1</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-glitch nias-dur-sm nias-scrub-1" src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop" alt="Sunset">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 6: Fade + Slide
-            const niasFadeSlide = document.querySelectorAll('.nias-fade-slide');
-            niasFadeSlide.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        x: -200,
-                        rotateZ: -15,
-                        opacity: 0,
-                        scale: 0.8,
-                    },
-                    {
-                        x: 0,
-                        rotateZ: 0,
-                        opacity: 1,
-                        scale: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">16 — Image</div>
+            <h2>Morph Scale</h2>
+            <p>nias-morph · nias-dur-md</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-morph nias-dur-md" src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&h=600&fit=crop" alt="Valley">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 7: Perspective Shift
-            const niasPerspectiveShift = document.querySelectorAll('.nias-perspective-shift');
-            niasPerspectiveShift.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: 60,
-                        y: 100,
-                        scale: 0.6,
-                        opacity: 0,
-                    },
-                    {
-                        rotateX: 0,
-                        y: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">17 — Image</div>
+            <h2>Diagonal Reveal</h2>
+            <p>nias-reveal-diagonal · nias-dur-lg · nias-ease-expo</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-reveal-diagonal nias-dur-lg nias-ease-expo" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Peak">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن برای همه متن‌ها
-            const niasAllInfo = document.querySelectorAll('.nias-info');
-            niasAllInfo.forEach(info => {
-                const section = info.closest('.nias-section');
-                gsap.fromTo(info,
-                    {
-                        opacity: 0,
-                        y: 30,
-                    },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 70%',
-                            end: 'top 40%',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section">
+    <div class="nias-container">
+        <div class="nias-info">
+            <div class="nias-badge">18 — Image</div>
+            <h2>Tilt Shift</h2>
+            <p>nias-tilt-shift · nias-dur-lg · nias-ease-power2</p>
+        </div>
+        <div class="nias-wrapper">
+            <img class="nias-element nias-tilt-shift nias-dur-lg nias-ease-power2" src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop" alt="Grass">
+        </div>
+    </div>
+</div>
 
-            // انیمیشن 8: Flip Card
-            const niasFlipCard = document.querySelectorAll('.nias-flip-card');
-            niasFlipCard.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateY: -180,
-                        opacity: 0,
-                    },
-                    {
-                        rotateY: 0,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<!-- ══════════════════════════════ SPLIT TEXT ══════════════════════════════ -->
+<div class="section-divider" style="margin-top:4rem;">
+    <span class="section-label">split text animations</span>
+</div>
 
-            // انیمیشن 9: Zoom Blur
-            const niasZoomBlur = document.querySelectorAll('.nias-zoom-blur');
-            niasZoomBlur.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        scale: 2,
-                        filter: 'blur(20px)',
-                        opacity: 0,
-                    },
-                    {
-                        scale: 1,
-                        filter: 'blur(0px)',
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">19 — Split Chars</div>
+        <h2 class="nias-split-chars nias-dur-xl nias-ease-back" style="font-size:clamp(2rem,6vw,4rem); font-weight:900; line-height:1.2; margin-bottom:.5rem;">
+            هر کاراکتر جدا می‌شود
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-split-chars · nias-dur-xl · nias-ease-back</p>
+    </div>
+</div>
 
-            // انیمیشن 10: Spiral
-            const niasSpiral = document.querySelectorAll('.nias-spiral');
-            niasSpiral.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateZ: -180,
-                        scale: 0.3,
-                        opacity: 0,
-                    },
-                    {
-                        rotateZ: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">20 — Split Words</div>
+        <h2 class="nias-split-words nias-dur-lg nias-ease-expo" style="font-size:clamp(1.8rem,5vw,3.5rem); font-weight:900; line-height:1.3; margin-bottom:.5rem;">
+            کلمه به کلمه ظاهر می‌شود
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-split-words · nias-dur-lg · nias-ease-expo</p>
+    </div>
+</div>
 
-            // انیمیشن 11: Wave
-            const niasWave = document.querySelectorAll('.nias-wave');
-            niasWave.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: 0,
-                        rotateY: -90,
-                        x: -100,
-                        opacity: 0,
-                    },
-                    {
-                        rotateX: 0,
-                        rotateY: 0,
-                        x: 0,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">21 — Split Lines</div>
+        <h2 class="nias-split-lines nias-dur-md" style="font-size:clamp(1.6rem,4.5vw,3rem); font-weight:700; line-height:1.5; margin-bottom:.5rem;">
+            هر خط از پایین<br>بالا می‌آید
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-split-lines · nias-dur-md</p>
+    </div>
+</div>
 
-            // انیمیشن 12: 3D Bounce
-            const niasBounce3d = document.querySelectorAll('.nias-bounce-3d');
-            niasBounce3d.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        y: -300,
-                        rotateX: -180,
-                        scale: 0.5,
-                        opacity: 0,
-                    },
-                    {
-                        y: 0,
-                        rotateX: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">22 — Text Glitch</div>
+        <h2 class="nias-text-glitch nias-dur-lg" style="font-size:clamp(2rem,6vw,4.5rem); font-weight:900; margin-bottom:.5rem;" data-text="GLITCH TEXT">
+            GLITCH TEXT
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-glitch · nias-dur-lg</p>
+    </div>
+</div>
 
-            // انیمیشن 13: Paper Fold
-            const niasFold = document.querySelectorAll('.nias-fold');
-            niasFold.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: 90,
-                        transformOrigin: 'top center',
-                        opacity: 0,
-                    },
-                    {
-                        rotateX: 0,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">23 — Text Wave</div>
+        <h2 class="nias-text-wave nias-dur-xl nias-ease-elastic" style="font-size:clamp(2rem,6vw,4rem); font-weight:900; margin-bottom:.5rem;">
+            موج متنی زیبا
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-wave · nias-dur-xl · nias-ease-elastic</p>
+    </div>
+</div>
 
-            // انیمیشن 14: Parallax Depth
-            const niasParallaxDepth = document.querySelectorAll('.nias-parallax-depth');
-            niasParallaxDepth.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        z: -500,
-                        scale: 0.6,
-                        opacity: 0.3,
-                    },
-                    {
-                        z: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">24 — Text Scramble</div>
+        <h2 class="nias-text-scramble nias-dur-lg" style="font-size:clamp(1.8rem,5vw,3.5rem); font-weight:900; font-family:'Space Mono',monospace; margin-bottom:.5rem;">
+            SCRAMBLE REVEAL
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-scramble · nias-dur-lg</p>
+    </div>
+</div>
 
-            // انیمیشن 15: Glitch
-            const niasGlitch = document.querySelectorAll('.nias-glitch');
-            niasGlitch.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        x: -50,
-                        skewX: 20,
-                        opacity: 0,
-                    },
-                    {
-                        x: 0,
-                        skewX: 0,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">25 — Typewriter</div>
+        <h2 class="nias-text-typewriter nias-dur-xl" style="font-size:clamp(1.5rem,4vw,2.8rem); font-weight:400; font-family:'Space Mono',monospace; margin-bottom:.5rem; min-height:1.3em;">
+            ماشین تایپ&hellip;
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-typewriter · nias-dur-xl</p>
+    </div>
+</div>
 
-            // انیمیشن 16: Morph Scale
-            const niasMorph = document.querySelectorAll('.nias-morph');
-            niasMorph.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        scaleX: 0.3,
-                        scaleY: 1.5,
-                        opacity: 0,
-                    },
-                    {
-                        scaleX: 1,
-                        scaleY: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">26 — Text Reveal (mask)</div>
+        <h2 class="nias-text-reveal" style="font-size:clamp(2rem,6vw,4.5rem); font-weight:900; line-height:1.2; margin-bottom:.5rem; overflow:hidden;">
+            متن با ماسک ظاهر می‌شود
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-reveal</p>
+    </div>
+</div>
 
-            // انیمیشن 17: Diagonal Reveal
-            const niasRevealDiagonal = document.querySelectorAll('.nias-reveal-diagonal');
-            niasRevealDiagonal.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        x: -200,
-                        y: -200,
-                        rotateZ: -45,
-                        scale: 0.5,
-                        opacity: 0,
-                    },
-                    {
-                        x: 0,
-                        y: 0,
-                        rotateZ: 0,
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
-            });
+<div class="nias-section" style="min-height:60vh;">
+    <div class="nias-container" style="max-width:700px; perspective:none;">
+        <div class="nias-badge" style="margin-bottom:1.5rem;">27 — Text Explode</div>
+        <h2 class="nias-text-explode nias-dur-xl nias-ease-expo" style="font-size:clamp(2rem,6vw,4rem); font-weight:900; margin-bottom:.5rem;">
+            انفجار کاراکتر
+        </h2>
+        <p style="font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted);">nias-text-explode · nias-dur-xl · nias-ease-expo</p>
+    </div>
+</div>
 
-            // انیمیشن 18: Tilt Shift
-            const niasTiltShift = document.querySelectorAll('.nias-tilt-shift');
-            niasTiltShift.forEach(element => {
-                const section = element.closest('.nias-section');
-                gsap.fromTo(element,
-                    {
-                        rotateX: -30,
-                        rotateY: 30,
-                        filter: 'blur(10px)',
-                        scale: 0.8,
-                        opacity: 0,
-                    },
-                    {
-                        rotateX: 0,
-                        rotateY: 0,
-                        filter: 'blur(0px)',
-                        scale: 1,
-                        opacity: 1,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 80%',
-                            end: 'center center',
-                            scrub: 1,
-                        },
-                    }
-                );
+<!-- footer -->
+<div style="text-align:center; padding:6rem 2rem 4rem; color:var(--muted); font-family:'Space Mono',monospace; font-size:.65rem; letter-spacing:.1em;">
+    NIAS ANIMATION SYSTEM — BUILT WITH GSAP + SCROLLTRIGGER
+</div>
+
+<!-- ══════════════════════════════ SCRIPTS ══════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function getDur(el, fallback = 1) {
+    const style = getComputedStyle(el);
+    const v = style.getPropertyValue('--nias-dur').trim();
+    return v ? parseFloat(v) : fallback;
+}
+function getDelay(el, fallback = 0) {
+    const style = getComputedStyle(el);
+    const v = style.getPropertyValue('--nias-delay').trim();
+    return v ? parseFloat(v) : fallback;
+}
+function getScrub(el, fallback = 1) {
+    const style = getComputedStyle(el);
+    const v = style.getPropertyValue('--nias-scrub').trim();
+    return v ? parseFloat(v) : fallback;
+}
+function getEase(el, fallback = 'none') {
+    const style = getComputedStyle(el);
+    const v = style.getPropertyValue('--nias-ease').trim();
+    return v || fallback;
+}
+
+// Makes a scrollTrigger config — scrub-only for images
+function makeST(section, el, scrubOverride = null) {
+    return {
+        trigger: section,
+        start: 'top 80%',
+        end: 'center center',
+        scrub: scrubOverride !== null ? scrubOverride : getScrub(el),
+    };
+}
+
+// ─── MANUAL SPLIT (no plugin needed) ───────────────────────────────────────
+function splitToChars(el) {
+    const text = el.textContent;
+    el.innerHTML = [...text].map(c =>
+        c === ' ' ? '<span class="split-char" style="display:inline-block"> </span>'
+                  : `<span class="split-char" style="display:inline-block">${c}</span>`
+    ).join('');
+    return el.querySelectorAll('.split-char');
+}
+
+function splitToWords(el) {
+    const text = el.textContent;
+    el.innerHTML = text.split(/(\s+)/).map(w =>
+        w.trim() ? `<span class="split-word" style="display:inline-block">${w}</span>`
+                 : w
+    ).join('');
+    return el.querySelectorAll('.split-word');
+}
+
+function splitToLines(el) {
+    // wrap whole content in line spans, split by <br> then natural wrap
+    const html = el.innerHTML;
+    const parts = html.split(/<br\s*\/?>/i);
+    el.innerHTML = parts.map(p =>
+        `<span class="line-wrap"><span class="split-line" style="display:inline-block">${p.trim()}</span></span>`
+    ).join('');
+    return el.querySelectorAll('.split-line');
+}
+
+// ─── HERO INTRO ────────────────────────────────────────────────────────────
+const heroTl = gsap.timeline({ delay: .2 });
+heroTl
+    .to('.hero-eyebrow', { opacity: 1, y: 0, duration: .8, ease: 'power2.out' })
+    .fromTo('.hero h1',  { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .9, ease: 'power2.out' }, '-=.3')
+    .fromTo('.hero-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, '-=.4');
+
+// ─── IMAGE ANIMATIONS ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+
+    const define = (selector, from, toOverrides = {}) => {
+        document.querySelectorAll(selector).forEach(el => {
+            const section = el.closest('.nias-section');
+            if (!section) return;
+            const to = Object.assign({ ease: getEase(el), ...toOverrides }, {});
+            // for scrub animations ease is typically 'none' unless class overrides
+            gsap.fromTo(el, from, {
+                ...to,
+                ease: getEase(el, 'none'),
+                scrollTrigger: makeST(section, el),
             });
         });
-    </script>
+    };
+
+    define('.nias-rotate-zoom',
+        { rotateY: -45, scale: 0.8, opacity: 0.3 },
+        { rotateY: 0, scale: 1, opacity: 1 });
+
+    define('.nias-rotate-xy',
+        { rotateX: 45, rotateY: 45, opacity: 0.3 },
+        { rotateX: 0, rotateY: 0, opacity: 1 });
+
+    define('.nias-rotate-360',
+        { rotateY: 0, scale: 0.5 },
+        { rotateY: 360, scale: 1 });
+
+    define('.nias-cube-flip',
+        { rotateX: -90, rotateZ: -45, scale: 0.7, opacity: 0 },
+        { rotateX: 0, rotateZ: 0, scale: 1, opacity: 1 });
+
+    define('.nias-twist-scale',
+        { rotateY: 180, rotateX: 30, scale: 1.5, opacity: 0 },
+        { rotateY: 0, rotateX: 0, scale: 1, opacity: 1 });
+
+    define('.nias-fade-slide',
+        { x: -200, rotateZ: -15, opacity: 0, scale: 0.8 },
+        { x: 0, rotateZ: 0, opacity: 1, scale: 1 });
+
+    define('.nias-perspective-shift',
+        { rotateX: 60, y: 100, scale: 0.6, opacity: 0 },
+        { rotateX: 0, y: 0, scale: 1, opacity: 1 });
+
+    define('.nias-flip-card',
+        { rotateY: -180, opacity: 0 },
+        { rotateY: 0, opacity: 1 });
+
+    define('.nias-zoom-blur',
+        { scale: 2, filter: 'blur(20px)', opacity: 0 },
+        { scale: 1, filter: 'blur(0px)', opacity: 1 });
+
+    define('.nias-spiral',
+        { rotateZ: -180, scale: 0.3, opacity: 0 },
+        { rotateZ: 0, scale: 1, opacity: 1 });
+
+    define('.nias-wave',
+        { rotateY: -90, x: -100, opacity: 0 },
+        { rotateY: 0, x: 0, opacity: 1 });
+
+    define('.nias-bounce-3d',
+        { y: -300, rotateX: -180, scale: 0.5, opacity: 0 },
+        { y: 0, rotateX: 0, scale: 1, opacity: 1 });
+
+    define('.nias-fold',
+        { rotateX: 90, transformOrigin: 'top center', opacity: 0 },
+        { rotateX: 0, opacity: 1 });
+
+    define('.nias-parallax-depth',
+        { z: -500, scale: 0.6, opacity: 0.3 },
+        { z: 0, scale: 1, opacity: 1 });
+
+    define('.nias-glitch',
+        { x: -50, skewX: 20, opacity: 0 },
+        { x: 0, skewX: 0, opacity: 1 });
+
+    define('.nias-morph',
+        { scaleX: 0.3, scaleY: 1.5, opacity: 0 },
+        { scaleX: 1, scaleY: 1, opacity: 1 });
+
+    define('.nias-reveal-diagonal',
+        { x: -200, y: -200, rotateZ: -45, scale: 0.5, opacity: 0 },
+        { x: 0, y: 0, rotateZ: 0, scale: 1, opacity: 1 });
+
+    define('.nias-tilt-shift',
+        { rotateX: -30, rotateY: 30, filter: 'blur(10px)', scale: 0.8, opacity: 0 },
+        { rotateX: 0, rotateY: 0, filter: 'blur(0px)', scale: 1, opacity: 1 });
+
+    // ─── NIAS-INFO text fade ────────────────────────────────────────────
+    document.querySelectorAll('.nias-info').forEach(info => {
+        const section = info.closest('.nias-section');
+        gsap.fromTo(info,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, ease: 'power2.out',
+              scrollTrigger: { trigger: section, start: 'top 70%', end: 'top 40%', scrub: 1 } });
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // SPLIT TEXT ANIMATIONS
+    // ══════════════════════════════════════════════════════════════════
+
+    // ── 19: nias-split-chars ──────────────────────────────────────────
+    document.querySelectorAll('.nias-split-chars').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const chars = splitToChars(el);
+        const dur   = getDur(el, 1.6);
+        const delay = getDelay(el, 0);
+        const ease  = getEase(el, 'back.out(1.7)');
+        gsap.from(chars, {
+            opacity: 0, y: 60, rotateX: -90,
+            duration: dur * 0.35,
+            ease,
+            stagger: { each: 0.04, from: 'start' },
+            delay,
+            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
+        });
+    });
+
+    // ── 20: nias-split-words ─────────────────────────────────────────
+    document.querySelectorAll('.nias-split-words').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const words = splitToWords(el);
+        const dur   = getDur(el, 1.2);
+        const ease  = getEase(el, 'expo.out');
+        gsap.from(words, {
+            opacity: 0, y: 50, skewX: 10,
+            duration: dur * 0.5,
+            ease,
+            stagger: 0.1,
+            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
+        });
+    });
+
+    // ── 21: nias-split-lines ─────────────────────────────────────────
+    document.querySelectorAll('.nias-split-lines').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const lines = splitToLines(el);
+        const dur   = getDur(el, 1);
+        const ease  = getEase(el, 'power3.out');
+        gsap.from(lines, {
+            y: '110%',
+            opacity: 0,
+            duration: dur * 0.6,
+            ease,
+            stagger: 0.15,
+            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
+        });
+    });
+
+    // ── 22: nias-text-glitch ─────────────────────────────────────────
+    document.querySelectorAll('.nias-text-glitch').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const original = el.textContent;
+        const chars = '!<>-_\\/[]{}—=+*^?#░▒▓';
+        let frame, iter = 0, started = false;
+
+        const scramble = () => {
+            el.innerText = original.split('').map((c, i) => {
+                if (i < Math.floor(iter)) return original[i];
+                if (c === ' ') return ' ';
+                return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+            iter += .4;
+            if (iter < original.length + 2) frame = requestAnimationFrame(scramble);
+            else el.innerText = original;
+        };
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 75%',
+            onEnter: () => { if (!started) { started = true; scramble(); } },
+            onLeaveBack: () => { started = false; cancelAnimationFrame(frame); el.innerText = original; },
+        });
+
+        // subtle continuous glitch pulse
+        gsap.to(el, {
+            skewX: 3, duration: .08, repeat: -1, yoyo: true,
+            ease: 'steps(1)', repeatDelay: 3,
+        });
+    });
+
+    // ── 23: nias-text-wave ───────────────────────────────────────────
+    document.querySelectorAll('.nias-text-wave').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const chars = splitToChars(el);
+        const dur   = getDur(el, 2);
+        const ease  = getEase(el, 'elastic.out(1,0.4)');
+
+        gsap.set(chars, { opacity: 0, y: 80 });
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 75%',
+            onEnter: () => {
+                gsap.to(chars, {
+                    opacity: 1, y: 0,
+                    ease,
+                    duration: dur * 0.4,
+                    stagger: { each: 0.05, from: 'start' },
+                });
+            },
+            onLeaveBack: () => gsap.set(chars, { opacity: 0, y: 80 }),
+        });
+    });
+
+    // ── 24: nias-text-scramble ───────────────────────────────────────
+    document.querySelectorAll('.nias-text-scramble').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const original = el.textContent;
+        const pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
+        let started = false;
+
+        const reveal = () => {
+            let progress = 0;
+            const total = original.length;
+            const step = () => {
+                el.innerText = original.split('').map((c, i) => {
+                    if (c === ' ') return ' ';
+                    if (i < progress) return c;
+                    return pool[Math.floor(Math.random() * pool.length)];
+                }).join('');
+                progress += .5;
+                if (progress <= total) requestAnimationFrame(step);
+                else el.innerText = original;
+            };
+            requestAnimationFrame(step);
+        };
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 75%',
+            onEnter: () => { if (!started) { started = true; reveal(); } },
+            onLeaveBack: () => { started = false; el.innerText = original; },
+        });
+    });
+
+    // ── 25: nias-text-typewriter ─────────────────────────────────────
+    document.querySelectorAll('.nias-text-typewriter').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const original = el.textContent;
+        const dur = getDur(el, 2);
+        const charDelay = (dur * 1000) / original.length;
+        let timeout, started = false;
+
+        el.style.borderLeft = '2px solid var(--accent)';
+        el.style.paddingLeft = '2px';
+
+        const type = () => {
+            el.textContent = '';
+            let i = 0;
+            const tick = () => {
+                el.textContent = original.slice(0, i);
+                i++;
+                if (i <= original.length) timeout = setTimeout(tick, charDelay);
+            };
+            tick();
+        };
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 75%',
+            onEnter: () => { if (!started) { started = true; type(); } },
+            onLeaveBack: () => { started = false; clearTimeout(timeout); el.textContent = ''; },
+        });
+    });
+
+    // ── 26: nias-text-reveal (mask) ──────────────────────────────────
+    document.querySelectorAll('.nias-text-reveal').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        // wrap in a clip container
+        const inner = document.createElement('span');
+        inner.style.cssText = 'display:block; overflow:hidden;';
+        const text = document.createElement('span');
+        text.style.cssText = 'display:block;';
+        text.innerHTML = el.innerHTML;
+        inner.appendChild(text);
+        el.innerHTML = '';
+        el.appendChild(inner);
+
+        gsap.from(text, {
+            yPercent: 110,
+            duration: 1.2,
+            ease: 'expo.out',
+            scrollTrigger: { trigger: section, start: 'top 75%', toggleActions: 'play none none reverse' },
+        });
+    });
+
+    // ── 27: nias-text-explode ────────────────────────────────────────
+    document.querySelectorAll('.nias-text-explode').forEach(el => {
+        const section = el.closest('.nias-section');
+        if (!section) return;
+        const chars = splitToChars(el);
+        const dur   = getDur(el, 2);
+        const ease  = getEase(el, 'expo.out');
+
+        gsap.set(chars, {
+            opacity: 0,
+            x: () => (Math.random() - .5) * 400,
+            y: () => (Math.random() - .5) * 300,
+            rotateZ: () => (Math.random() - .5) * 180,
+            scale: () => Math.random() * 2 + .5,
+        });
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: 'top 75%',
+            onEnter: () => {
+                gsap.to(chars, {
+                    opacity: 1, x: 0, y: 0, rotateZ: 0, scale: 1,
+                    ease,
+                    duration: dur * 0.4,
+                    stagger: { each: 0.04, from: 'random' },
+                });
+            },
+            onLeaveBack: () => {
+                gsap.set(chars, {
+                    opacity: 0,
+                    x: () => (Math.random() - .5) * 400,
+                    y: () => (Math.random() - .5) * 300,
+                    rotateZ: () => (Math.random() - .5) * 180,
+                    scale: () => Math.random() * 2 + .5,
+                });
+            },
+        });
+    });
+
+}); // end DOMContentLoaded
+</script>
 
 </body>
 </html>
